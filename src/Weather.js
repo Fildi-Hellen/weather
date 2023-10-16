@@ -80,7 +80,7 @@ export default function Weather(props) {
           </a>{" "}
           and is{" "}
           <a
-            href="https://github.com/shecodesio/weather"
+            href="https://github.com/Fildi-Hellen/weather"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -92,7 +92,7 @@ export default function Weather(props) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            hosted on Netlify
+            hosted on GitHub
           </a>
         </footer>
       </div>
