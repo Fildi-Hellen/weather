@@ -1,42 +1,39 @@
-import React, { useState, useEffect } from "react";
-import WeatherForecastPreview from "./WeatherForecastPreview";
-import axios from "axios";
-import "./WeatherForecast.css";
 
-export default function WeatherForecast(props) {
-  const [loaded, setLoaded] = useState(false);
-  const [forecast, setForecast] = useState(null);
+import React from "react";
+import WeatherIcon from "./WeatherIcon";
 
-  useEffect(() => {
-    setLoaded(false);
-  }, [props.coordinates]);
-
-  function handleForecastResponse(response) {
-    setForecast(response.data.daily);
-    setLoaded(true);
+export default function WeatherForecastPreview(props) {
+  function maxTemperature() {
+    let temperature = Math.round(props.data.temperature.maximum);
+    return `${temperature}°`;
   }
 
-  if (loaded) {
-    return (
-      <div className="WeatherForecast row">
-        {forecast.map(function (day, index) {
-          if (index < 5) {
-            return (
-              <div className="col" key={index}>
-                <WeatherForecastPreview data={day} />
-              </div>
-            );
-          } else {
-            return null;
-          }
-        })}
+  function minTemperature() {
+    let temperature = Math.round(props.data.temperature.minimum);
+    return `${temperature}°`;
+  }
+
+  function day() {
+    let date = new Date(props.data.time * 1000);
+    let day = date.getDay();
+
+    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    return days[day];
+  }
+
+  return (
+    <div>
+      <div className="WeatherForecast-day">{day()}</div>
+      <WeatherIcon code={props.data.condition.icon} size={36} />
+      <div className="WeatherForecast-temperatures">
+        <span className="WeatherForecast-temperature-max">
+          {maxTemperature()}
+        </span>
+        <span className="WeatherForecast-temperature-min">
+          {minTemperature()}
+        </span>
       </div>
-    );
-  } else {
-    let apiKey = "eac360db5fc86ft86450f3693e73o43f";
-    let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${props.city}&key=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(handleForecastResponse);
-
-    return null;
-  }
+    </div>
+  );
 }
